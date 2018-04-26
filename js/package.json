@@ -1,0 +1,47 @@
+{
+  "name": "atk-google-address",
+  "version": "0.0.1",
+  "description": "Agile Toolkit - Google Place interface for address.",
+  "main": "lib/atk-google-address.js",
+  "scripts": {
+    "build": "webpack --env build",
+    "dev": "webpack --progress --colors --watch --env dev",
+    "test": "mocha --compilers js:babel-core/register --colors ./test/*.spec.js",
+    "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
+  },
+  "devDependencies": {
+    "@types/jquery": "^2.0.41",
+    "babel": "6.5.2",
+    "babel-core": "6.22.1",
+    "babel-eslint": "7.1.1",
+    "babel-loader": "6.2.10",
+    "babel-plugin-add-module-exports": "0.1.2",
+    "babel-preset-env": "^1.6.1",
+    "chai": "3.4.1",
+    "eslint": "1.7.2",
+    "eslint-loader": "1.6.1",
+    "mocha": "2.3.4",
+    "webpack": "2.2.1",
+    "yargs": "6.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atk4/google-address"
+  },
+  "keywords": [
+    "webpack",
+    "es6",
+    "starter",
+    "library",
+    "universal",
+    "umd",
+    "commonjs"
+  ],
+  "author": "Agile Toolkit",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/atk4/google-address/issues"
+  },
+  "homepage": "http://www.agiletoolkit.org/",
+  "dependencies": {}
+}

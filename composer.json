@@ -1,0 +1,37 @@
+{
+  "name": "atk4/google-address",
+  "type": "library",
+  "description": "Google Place interface for address form.",
+  "keywords": ["atk4", "agile", "agile ui", "data", "framework"],
+  "homepage": "https://github.com/atk4/google-address",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "Romans Malinovskis",
+      "email": "romans@agiletoolkit.org",
+      "homepage": "https://nearly.guru/"
+    }
+  ],
+  "require": {
+    "atk4/ui": "*",
+    "php": ">=5.6.0"
+  },
+  "require-dev": {
+    "behat/behat": "^3.4",
+    "behat/mink-extension": "^2.2",
+    "fzaninotto/faker": "*",
+    "behat/mink-zombie-driver": "^1.4",
+    "atk4/schema": "*",
+    "phpunit/phpcov": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {"atk4\\google-address\\":"src/"}
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "atk4\\audit\\tests\\":"tests/"
+    }
+  }
+}

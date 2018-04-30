@@ -27,7 +27,7 @@
     "phpunit/phpcov": "^3.0"
   },
   "autoload": {
-    "psr-4": {"atk4\\google-address\\":"src/"}
+    "psr-4": {"atk4\\GoogleAddress\\":"src/"}
   },
   "autoload-dev": {
     "psr-4": {

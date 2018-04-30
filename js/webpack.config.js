@@ -5,19 +5,16 @@ const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const path = require('path');
 const env  = require('yargs').argv.env; // use --env with webpack 2
 
-let libraryName = 'atk';
+let libraryName = 'atk-google-address';
 
 let plugins = [
-  new webpack.DefinePlugin({
-    _ATKVERSION_ : JSON.stringify(require("./package.json").version)
-  })
 ], outputFile;
 
 if (env === 'build') {
   plugins.push(new UglifyJsPlugin({ minimize: true }));
-  outputFile = libraryName + '-google-address.min.js';
+  outputFile = libraryName + '.min.js';
 } else {
-  outputFile = libraryName + '-google-address.js';
+  outputFile = libraryName + '.js';
 }
 
 const config = {
@@ -44,7 +41,7 @@ const config = {
       // }
     ]
   },
-  externals: {jquery: 'jQuery'},
+  externals: {jquery: 'jQuery', atk: 'atk'},
   resolve: {
     modules: [path.resolve('./src'), path.join(__dirname, 'node_modules')],
     extensions: ['.json', '.js'],

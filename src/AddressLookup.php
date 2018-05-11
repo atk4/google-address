@@ -181,7 +181,7 @@ class AddressLookup extends Line
         }
 
         if (!AddressLookup::$isApiLoaded) {
-            $this->app->requireJs( 'https://cdn.rawgit.com/atk4/google-address/develop/public/atk-google-address.min.js');
+            $this->app->requireJs( 'https://cdn.rawgit.com/atk4/google-address/1.0.3/public/atk-google-address.min.js');
             $this->app->requireJs( "https://maps.googleapis.com/maps/api/js?key={$this->apiKey}&libraries=places&callback=atk.mapService.initGoogleApi", false, true );
             AddressLookup::$isApiLoaded = true;
         }

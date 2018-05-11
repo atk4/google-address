@@ -153,15 +153,17 @@ export default class addressLookup {
    * @param place A google place object.
    */
   fillAddress(place) {
-    //return if we do not have the address_compoents
-    if (!place.hasOwnProperty('address_components')){
-      return;
-    }
     const that = this;
     //clear all fields;
     this.fields.forEach(function(field){
       field.input.val('');
     });
+
+    //return if we do not have an address_compoents
+    if (!place.hasOwnProperty('address_components')){
+      this.$input.val('');
+      return;
+    }
 
     // set field value according to their fieldMap.
     this.fields.forEach(function(field){
@@ -180,7 +182,11 @@ export default class addressLookup {
             }
           }
         }
-        return (idx === 0) ? temp : (acc + field.glue + temp);
+        if (acc !== '' && idx > 0) {
+          temp = (temp === '') ? acc : acc + field.glue + temp;
+          //temp = acc + field.glue + temp;
+        }
+        return temp;
       }, '');
       field.input.val(value);
     });

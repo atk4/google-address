@@ -176,17 +176,24 @@ class AddressLookup extends Line
 
     public function renderView()
     {
-        if (!$this->apiKey) {
-            throw new \Exception('You need to supply your own Google Maps api key.');
-        }
-
-        if (!AddressLookup::$isApiLoaded) {
-            $this->app->requireJs( 'https://cdn.rawgit.com/atk4/google-address/1.0.3/public/atk-google-address.min.js');
-            $this->app->requireJs( "https://maps.googleapis.com/maps/api/js?key={$this->apiKey}&libraries=places&callback=atk.mapService.initGoogleApi", false, true );
-            AddressLookup::$isApiLoaded = true;
-        }
+        // Load google api if not loaded yet <
+        self::loadGoogleAPI($this->app, $this->apiKey);
 
         $this->js(true)->atkAddressLookup($this->getLookupOptions());
         parent::renderView();
+    }
+
+    public static function loadGoogleAPI($app, $api_key)
+    {
+        if (!AddressLookup::$isApiLoaded) {
+
+            if (!$api_key) {
+                throw new \Exception('You need to supply your own Google Maps api key.');
+            }
+
+            $app->requireJs('https://cdn.rawgit.com/atk4/google-address/1.0.3/public/atk-google-address.min.js');
+            $app->requireJs("https://maps.googleapis.com/maps/api/js?key={$api_key}&libraries=places&callback=atk.mapService.initGoogleApi", false, true);
+            AddressLookup::$isApiLoaded = true;
+        }
     }
 }

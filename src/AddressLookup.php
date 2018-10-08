@@ -35,6 +35,13 @@ class AddressLookup extends Line
     public $types = null;
 
     /**
+     * Sets the default language to use <
+     *
+     * @var string
+     */
+    public $language = 'en';
+
+    /**
      * Whether or not the place api will use bounds set by browser location.
      * @var bool
      */
@@ -177,13 +184,13 @@ class AddressLookup extends Line
     public function renderView()
     {
         // Load google api if not loaded yet <
-        self::loadGoogleAPI($this->app, $this->apiKey);
+        self::loadGoogleAPI($this->app, $this->apiKey, $this->language);
 
         $this->js(true)->atkAddressLookup($this->getLookupOptions());
         parent::renderView();
     }
 
-    public static function loadGoogleAPI($app, $api_key)
+    public static function loadGoogleAPI($app, $api_key, $language)
     {
         if (!AddressLookup::$isApiLoaded) {
 
@@ -192,7 +199,11 @@ class AddressLookup extends Line
             }
 
             $app->requireJs('https://cdn.rawgit.com/atk4/google-address/1.0.3/public/atk-google-address.min.js');
-            $app->requireJs("https://maps.googleapis.com/maps/api/js?key={$api_key}&libraries=places&callback=atk.mapService.initGoogleApi", false, true);
+            $app->requireJs(
+                "https://maps.googleapis.com/maps/api/js?key={$api_key}&libraries=places&language={$language}&callback=atk.mapService.initGoogleApi",
+                false,
+                true
+            );
             AddressLookup::$isApiLoaded = true;
         }
     }

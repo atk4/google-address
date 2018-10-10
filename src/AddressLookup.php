@@ -190,7 +190,7 @@ class AddressLookup extends Line
         parent::renderView();
     }
 
-    public static function loadGoogleAPI($app, $api_key, $language)
+    public static function loadGoogleAPI($app, $api_key, $language = 'en')
     {
         if (!AddressLookup::$isApiLoaded) {
 

@@ -1,72 +1,44 @@
 <?php
 
-namespace atk4\GoogleAddress;
+declare(strict_types=1);
 
-use atk4\ui\FormField\Line;
+namespace Atk4\GoogleAddress;
+
+
+use Atk4\Ui\Exception;
+use Atk4\Ui\Form\Control;
+use Atk4\Ui\Form\Control\Line;
 
 class AddressLookup extends Line
 {
-    /**
-     * The google api developper key.
-     * @var null
-     */
-    public $apiKey = null;
-
-    /**
-     * The fieldMap array.
-     *
-     * @var array
-     */
-    public $fieldMap = [];
-
-    /**
-     * The default Google address_component property value.
-     * @var string
-     */
     public $defaultGoogleProperty = 'long_name';
+    //-------------
 
-    /**
-     * Sets the types of predictions to be returned as specify in Google place api.
-     * https://developers.google.com/places/supported_types#table3
-     *
-     *
-     * @var null
-     */
-    public $types = null;
+    /** @var array An array of Google address_components to fill specific controls with. */
+    public $controlMap = [];
 
-    /**
-     * Sets the default language to use <
-     *
-     * @var string
-     */
+    /** @var string The google api developper key. */
+    public $apiKey = '';
+
+    /** @var array types of predictions to be returned as specify in Google place api. */
+    public $types = [];
+
+    /** @var string */
     public $language = 'en';
 
-    /**
-     * Whether or not the place api will use bounds set by browser location.
-     * @var bool
-     */
+    /** @var bool Whether the place api will use bounds set by the browser location. */
     public $useBrowserLocation = false;
 
-    /**
-     * Restricts predictions to the specified country (ISO 3166-1 Alpha-2 country code, case insensitive).
-     * E.g., us, br, au. An array of up to 5 country code strings.
-     *
-     * @var null|array
-     */
-    public $countryLimit = null;
+    /** @var array Limit search result to specific countries. */
+    public $countryLimit = [];
 
-    /**
-     * Keep track of Google api js file loaded or not.
-     * @var bool
-     */
+    /** @var bool Keep track of Google api js file loaded or not. */
     public static $isApiLoaded = false;
 
     /**
      * Set Google developper api key.
-     *
-     * @param string $key The google api key.
      */
-    public function setGoogleApiKey($key)
+    public function setGoogleApiKey(string $key)
     {
         $this->apiKey = $key;
     }
@@ -95,9 +67,9 @@ class AddressLookup extends Line
      *  You may specify as many google address_component to be concatenate to one value.
      * --------------
      *  Map an input form field by specifying the name property.
-     *  A google address_component may have two values, a short_name or a long_name value. Ex, a country address_component can be specify using
+     *  A Google address_component may have two values, a short_name or a long_name value. Ex, a country address_component can be specified using
      *  the long name, i.e United Kingdom or it's short name 'UK'
-     *  You can choose to use the long or short name value by specifying it in $googleCompents.
+     *  You can choose to use the long or short name value by specifying it in $googleComponents.
      *
      *  $ga->mapGoogleComponentToField('country', ['country' => 'short_name', 'postal_code'], ' / ');
      *
@@ -105,33 +77,22 @@ class AddressLookup extends Line
      *  ex: 'UK / W1C 1JT'
      *
      */
-    public function mapGoogleComponentToField($fieldName, $googleComponents, $glue = ' ')
+    public function onAutoCompleteSetWith(Control $formControl, Components $component): self
     {
-        $temp[$fieldName] = [];
-        if (!is_array($googleComponents)) {
-            $temp[$fieldName] = ['concat' => [['type' => $googleComponents, 'property' => $this->defaultGoogleProperty]]];
-        } else {
-            foreach ($googleComponents as $key => $component) {
-                if ($component === 'short_name' || $component === 'long_name') {
-                    $temp[$fieldName]['concat'][] = ['type' => $key, 'property' => $component];
-                } else {
-                    $temp[$fieldName]['concat'][] = ['type' => $component, 'property' => $this->defaultGoogleProperty];
-                }
-            }
+        if ($formControl->form->name !== $this->form->name) {
+            throw new Exception('Control must be within the same form.');
         }
-        if ($glue) {
-            $temp[$fieldName]['glue'] = $glue;
-        }
+        $this->controlMap[] = ['name' => $formControl->short_name, 'value' => $component];
 
-        $this->fieldMap[] = $temp;
+        return $this;
     }
 
     /**
-     * Set search result limit up to 5 country.
+     * Restricts predictions to the specified country (ISO 3166-1 Alpha-2 country code, case insensitive).
+     * E.g., us, br, au. An array of up to 5 country code strings.
      *
-     * @param string|array $limit
      */
-    public function setCountryLimit($limit)
+    public function setCountryLimit(array $limit)
     {
         $this->countryLimit = $limit;
     }
@@ -147,17 +108,21 @@ class AddressLookup extends Line
 
     /*
      * Set place result types.
+     * https://developers.google.com/places/supported_types#table3
      */
-    public function setTypes($types)
+    public function setTypes(array $types)
     {
-        $this->setTypes = $types;
+        $this->types = $types;
     }
 
     private function getLookupOptions()
     {
         $options = [];
-        if ($this->fieldMap) {
-            $options['fieldMap'] = $this->fieldMap;
+        $options['formSelector'] = '#' . $this->form->name;
+        if ($this->controlMap) {
+            foreach ($this->controlMap as $k => $comp) {
+                $options['fieldMap'][] = ['name' => $comp['name'], 'value' => $comp['value']->getBuiltValue()];
+            }
         }
         if ($this->countryLimit) {
             if (is_array($this->countryLimit)) {
@@ -167,13 +132,9 @@ class AddressLookup extends Line
             }
         }
         if ($this->types) {
-            if (is_array($this->types)) {
-                $options['types'] = $this->types;
-            } else {
-                $options['types'] = [$this->types];
-
-            }
+            $options['types'] = [$this->types];
         }
+
         if ($this->useBrowserLocation) {
             $options['useBrowserLocation'] = true;
         }
@@ -181,10 +142,10 @@ class AddressLookup extends Line
         return $options;
     }
 
-    public function renderView()
+    public function renderView(): void
     {
         // Load google api if not loaded yet <
-        self::loadGoogleAPI($this->app, $this->apiKey, $this->language);
+        self::loadGoogleAPI($this->getApp(), $this->apiKey, $this->language);
 
         $this->js(true)->atkAddressLookup($this->getLookupOptions());
         parent::renderView();
@@ -198,7 +159,7 @@ class AddressLookup extends Line
                 throw new \Exception('You need to supply your own Google Maps api key.');
             }
 
-            $app->requireJs('https://cdn.rawgit.com/atk4/google-address/1.0.3/public/atk-google-address.min.js');
+            $app->requireJs('../../../vendor/atk4/google-address/public/atk-google-maps-api.js');
             $app->requireJs(
                 "https://maps.googleapis.com/maps/api/js?key={$api_key}&libraries=places&language={$language}&callback=atk.mapService.initGoogleApi",
                 false,

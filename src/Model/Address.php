@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types=1);
+namespace Atk4\GoogleAddress\Model;
 
-namespace atk4\GoogleAddress\Model;
-
-use atk4\data\Model;
-use atk4\GoogleAddress\AddressLookup;
+use Atk4\Data\Model;
+use Atk4\GoogleAddress\AddressLookup;
 
 class Address extends Model
 {
     public $table = 'your_address_table_name_here';
     public $apiKey = 'YOUR_GOOGLE_API_KEY_HERE';
 
-    public function init()
+    protected function init(): void
     {
         parent::init();
 

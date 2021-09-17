@@ -1,5 +1,8 @@
 ## JS Version Change
 
+### 2.0.0
+  Update for Atk4 v3.0 and higher.
+
 ### 1.0.1
 
  - minor fix:

@@ -9,29 +9,26 @@
   "prefer-stable": true,
   "authors": [
     {
-      "name": "Romans Malinovskis",
-      "email": "romans@agiletoolkit.org",
-      "homepage": "https://nearly.guru/"
+      "name": "Alain Belair",
+      "email": "belair.alain@gmail.com"
     }
   ],
   "require": {
-    "atk4/ui": "*",
-    "php": ">=5.6.0"
+    "atk4/ui": "dev-develop",
+    "php": ">=7.4.0"
   },
-  "require-dev": {
-    "behat/behat": "^3.4",
-    "behat/mink-extension": "^2.2",
-    "fzaninotto/faker": "*",
-    "behat/mink-zombie-driver": "^1.4",
-    "atk4/schema": "*",
-    "phpunit/phpcov": "^3.0"
+  "require-release": {
+    "php": ">=7.4.0",
+    "atk4/ui": "~2.4.0"
   },
   "autoload": {
-    "psr-4": {"atk4\\GoogleAddress\\":"src/"}
+    "psr-4": {
+      "Atk4\\GoogleAddress\\": "src/"
+    }
   },
   "autoload-dev": {
     "psr-4": {
-      "atk4\\audit\\tests\\":"tests/"
+      "Atk4\\GoogleAddress\\tests\\": "tests/"
     }
   }
 }

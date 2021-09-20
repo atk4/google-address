@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace Atk4\GoogleAddress\Model;
 
 use Atk4\Data\Model;
-use Atk4\GoogleAddress\AddressLookup;
+use Atk4\GoogleAddress\Form\Control\AddressLookup;
+use Atk4\GoogleAddress\Utils\Type;
 
 class Address extends Model
 {
@@ -17,17 +18,17 @@ class Address extends Model
 
         $this->addField('map_search', ['never_save' => true, 'ui' => ['form' => [new AddressLookup(['apiKey' => $this->apiKey])]]]);
 
-        $this->addField('street_number');
-        $this->addField('route');
-        $this->addField('locality');
-        $this->addField('sub_locality_level_1');
-        $this->addField('postal_town');
-        $this->addField('administrative_area_level_2');
-        $this->addField('administrative_area_level_1');
-        $this->addField('country');
-        $this->addField('postal_code');
-        $this->addField('lat');
-        $this->addField('lng');
+        $this->addField(Type::STREET_NUMBER);
+        $this->addField(Type::ROUTE);
+        $this->addField(Type::LOCALITY);
+        $this->addField(Type::SUB_LOCALITY_1);
+        $this->addField(Type::POSTAL_TOWN);
+        $this->addField(Type::ADMIN_LEVEL_1);
+        $this->addField(Type::ADMIN_LEVEL_2);
+        $this->addField(Type::COUNTRY);
+        $this->addField(Type::POSTAL_CODE);
+        $this->addField(Type::LAT);
+        $this->addField(Type::LNG);
 
         $this->addHook('beforeSave', function($m) {
             $m->getElement('map_search')->never_persist = true;

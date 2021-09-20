@@ -5,7 +5,8 @@ import addressLookup from 'plugins/addressLookup';
 if (typeof atk !== 'undefined') {
   // Register atkAddressLoukup as jQuery plugin.
   atk.registerPlugin('AddressLookup', addressLookup);
-// Add mapService to atk object.
-  atk.mapService = mapService;
-}
 
+  if (!atk.mapService) {
+    atk.mapService = mapService;
+  }
+}

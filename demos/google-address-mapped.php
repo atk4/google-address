@@ -1,24 +1,42 @@
 <?php
 
-/**
- * This sample use specific mapping of form field to google address_component field name.
- */
-$key = 'YOUR_GOOGLE_MAP_API_KEY_HERE';
+declare(strict_types=1);
 
-$f = $app->add('Form');
+/** @var \Atk4\Ui\App $app */
+require_once __DIR__ . '/../../init-app.php';
 
-$ga = $f1->addField('map_search', [new atk4\GoogleAddress\AddressLookup(['apiKey' => $key])]);
+use Atk4\GoogleAddress\Form\Control\AddressLookup;
+use Atk4\GoogleAddress\Utils\Property;
+use Atk4\GoogleAddress\Utils\Type;
+use Atk4\GoogleAddress\Utils\Components;
+use Atk4\GoogleAddress\Utils\JsLoader;
+use Atk4\Ui\Form;
 
-// will concatenate street_number and route in address.
-$ga->mapGoogleComponentToField('address', ['street_number', 'route']);
+// Set Google developer key.
+JsLoader::setGoogleApiKey('');
 
-// will concatenate administrative_area_level_2 and locality in address2.
-$ga->mapGoogleComponentToField('address2', ['administrative_area_level_2', 'locality']);
+$addressValue = Components::with(Property::of(Type::STREET_NUMBER))
+                          ->concat(Property::of(Type::ROUTE))
+                          ->glueWith(' ');
+$address2Value = Components::with(Property::of(Type::ADMIN_LEVEL_1));
+$countryValue = Components::with(Property::of(Type::COUNTRY))
+                          ->concat(Property::of(Type::POSTAL_CODE))
+                          ->glueWith(' / ');
 
-// will concatenate country and postal_code in country using '/' as glue.
-$ga->mapGoogleComponentToField('country', ['country' => 'short_name', 'postal_code'], ' / ');
+$latLngValue = Components::with(Property::of(Type::LAT))->concat(Property::of(Type::LNG))->glueWith(':');
 
 
-$f->addField('address');
-$f->addField('address2');
-$f->addField('country');
+$form = Form::addTo($app);
+
+/** @var AddressLookup $ga */
+$ga = $form->addControl('map_search', [AddressLookup::class]);
+
+$address = $form->addControl('address');
+$address2 = $form->addControl('address2');
+$country = $form->addControl('country');
+$latLng = $form->addControl('lat_lng');
+
+$ga->onCompleteSet($address, $addressValue);
+$ga->onCompleteSet($address2, $address2Value);
+$ga->onCompleteSet($country, $countryValue);
+$ga->onCompleteSet($latLng, $latLngValue);

@@ -5,15 +5,13 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const packageVersion = require('./package.json').version;
 
-let libraryName = 'atk-google-address';
-
 module.exports = (env) => {
   // determine which mode
   const isProduction = env.production;
   const srcDir = path.resolve(__dirname, './src');
   const publicDir = path.resolve(__dirname, '../public');
-  const libraryName = 'atkGoogleMaps';
-  const filename = 'atk-google-maps-api';
+  const libraryName = 'atk.google.maps';
+  const filename = 'atk-google-maps';
 
   const prodPerformance = {
     hints: false,
@@ -85,7 +83,7 @@ module.exports = (env) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        _ATK_GOOGLE_API_VERSION_: JSON.stringify(packageVersion),
+        _ATK_GOOGLE_VERSION_: JSON.stringify(packageVersion),
       })
     ],
   };

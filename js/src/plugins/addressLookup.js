@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import mapService from '../services/MapService';
+import atk from 'atk';
 
 /**
  * Attach a Google map place autocomplete search
@@ -7,47 +7,25 @@ import mapService from '../services/MapService';
  *
  * Usage: $('input').atkAddressLookup(fieldMap:[])
  * Where fieldMap contains the input field in form that need to be
- * map with google address_component value from search input.
+ * set with google address_component value from search input.
  *
- * if fieldMap is empty, then this will assume that form input field name
+ * if fieldMap is empty, then assumption is made that form input control name
  * correspond to google address_component name.
  *
  * fieldMap example:
- *  "fieldMap":[
- *              {"address":
- *                  {
- *                   "concat":[
- *                             {"type":"street_number","property":"long_name"},
- *                             {"type":"route","property":"long_name"}
- *                            ],
- *                   "glue":" "
- *                  }
- *              },
- *              {"address2":
- *                  {
- *                  "concat":[
- *                            {"type":"locality","property":"long_name"}
- *                            ],
- *                  "glue":" "
- *                  }
- *             },
- *             {"country":
- *                {
- *                "concat":[
- *                          {"type":"country","property":"short_name"},
- *                          {"type":"postal_code","property":"long_name"}
- *                         ],
- *                "glue":" / "
- *             }
- *             ]
+ * "fieldMap": [{
+ *     "name": "address",
+ *     "value": {
+ *      "def": [{"type": "street_number", "prop": "long_name"}, {"type": "route", "prop": "long_name"}],
+ *      "glue": " / "
+ *    }
+ *  },
+ *  {
+ *    "name": "address2",
+ *    "value": {
+ *    "def": [{"type": "administrative_area_level_2", "prop": "long_name"}]}
+ *  }]
  *
- *   In this example,
- *    input name address in form to be fill by concatenating the value return by google address_component street_number and route, both using long_name property.
- *        ex: address = '4566 street name'
- *    input name address2 in form to be fill by using the value return by google address_component locality using long_name property.
- *        ex: address2 = 'london'
- *    input name country in form to be fill by concatenating the value return by google address_component country and postal_code but with country using short_name property and using "/" as glue.
- *        ex: country = 'UK / 34342'
  */
 export default class addressLookup {
 
@@ -62,9 +40,8 @@ export default class addressLookup {
 
   main()
   {
-    // wait for google map api to be loaded prior to init.
-    mapService.map.apiLoaded.then((r) => {
-      this.initMap();
+    atk.mapService.getGoogleApi().then( (google) => {
+      this.initAutocomplete(google);
       this.$input.on('keydown', function(e) {
           if (e.keyCode === 13){
             e.preventDefault();
@@ -79,8 +56,8 @@ export default class addressLookup {
   /**
    * Initialize lookup input to Google autocomplete.
    */
-  initMap() {
-    this.autocomplete = mapService.getAutocomplete(this.$input[0]);
+  initAutocomplete(google) {
+    this.autocomplete = new google.maps.places.Autocomplete(this.$input[0]);
     if (this.settings.options) {
       this.autocomplete.setOptions(this.settings.options);
     }
@@ -108,8 +85,6 @@ export default class addressLookup {
     }
     // remove ourself from the list.
     this.fields = fields.filter(field => field.name !== this.$input.attr('name'));
-
-    console.log(this.fields);
   }
 
   /**
@@ -180,8 +155,9 @@ export default class addressLookup {
   getLatLngFromPlace(comp, place) {
     return place.geometry.location[comp.type]();
   }
+
   /**
-   * Map form field with google address_component value
+   * Map form control with google address_component value
    * according to fieldMap settings.
    *
    * @param controls
@@ -194,14 +170,10 @@ export default class addressLookup {
   }
 
   /**
-   * Return an array of all fields in form. This array contains information
-   * on each field associated with
-   * their google map property.
+   * Return an array of all controls in form.
    *
    * This is normally use when field name in form directly correspond to Google map property name.
    *
-   *
-   * @returns {{name: string, input: JQuery | jQuery | HTMLElement}[]}
    */
   getInputsField() {
      return Array.from(this.$el.parents(this.settings.formSelector).find('input'), (input) => {

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Atk4\GoogleAddress\Utils;
 
 /**
- * Component are made with Google address component_type property.
- * Properties store in each component can then be output by the
+ * Components are made with Google address component_type property.
+ * Properties store in each build can then be output by the
  * address lookup plugin concatenating each property using the specified
- * glue to set input value.
+ * glue in order to set input value.
  */
 class Build
 {

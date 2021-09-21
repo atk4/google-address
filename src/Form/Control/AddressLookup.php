@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Atk4\GoogleAddress\Form\Control;
 
-use Atk4\GoogleAddress\Utils\Components;
+use Atk4\GoogleAddress\Utils\Build;
 use Atk4\GoogleAddress\Utils\JsLoader;
 use Atk4\Ui\Form\Control;
 use Atk4\Ui\Form\Control\Line;
@@ -34,9 +34,9 @@ class AddressLookup extends Line
      *    Will fill $addressInput control with 'street_number' value return by Google Place AutoComplete.
      *
      */
-    public function onCompleteSet(Control $formControl, Components $component): self
+    public function onCompleteSet(Control $formControl, Build $builder): self
     {
-        $this->controlMap[] = ['name' => $formControl->short_name, 'value' => $component];
+        $this->controlMap[] = ['name' => $formControl->short_name, 'value' => $builder];
 
         return $this;
     }

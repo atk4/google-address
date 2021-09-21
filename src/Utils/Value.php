@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Atk4\GoogleAddress\Utils;
 
-class Property
+class Value
 {
     /** @var string */
     private $addressType;

@@ -10,9 +10,9 @@ namespace Atk4\GoogleAddress\Utils;
  * address lookup plugin concatenating each property using the specified
  * glue to set input value.
  */
-class Components
+class Build
 {
-    /** @var Property[]  */
+    /** @var Value[]  */
     private $components = [];
 
     /** @var string  */
@@ -23,12 +23,12 @@ class Components
         $this->components = $components;
     }
 
-    public static function with(Property $def): self
+    public static function with(Value $def): self
     {
         return new static([$def]);
     }
 
-    public function concat(Property $def): self
+    public function concat(Value $def): self
     {
         $this->components[] = $def;
 

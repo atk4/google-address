@@ -2,19 +2,17 @@
 
 declare(strict_types=1);
 
-/** @var \Atk4\Ui\App $app */
-require_once __DIR__ . '/../../init-app.php';
-
 use Atk4\GoogleAddress\Form\Control\AddressLookup;
 use Atk4\GoogleAddress\Utils\Type;
 use Atk4\GoogleAddress\Utils\JsLoader;
 use Atk4\Ui\Form;
 
+/** @var \Atk4\Ui\App $app */
+
 // Set Google developer key.
 JsLoader::setGoogleApiKey('');
 
 $form = Form::addTo($app);
-
 $form->addControl('map_search', [AddressLookup::class]);
 
 $f_add = $form->addGroup('Street/City');

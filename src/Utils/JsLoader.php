@@ -51,7 +51,7 @@ class JsLoader
      * This js file add a mapService to the atk namespace. (atk.mapService)
      * and set appropriate maps api options.
      * Javascript integration can then use mapService for initialization.
-     * ex: atk.mapService.getGoogleApi().then( (google) => {//initialize maps.})
+     * ex: atk.mapService.loadGoogleApi().then((google) => {//initialize maps.})
      */
     public static function load(App $app, string $locationUrl = null): void
     {

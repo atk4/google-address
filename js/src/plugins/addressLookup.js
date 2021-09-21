@@ -40,7 +40,7 @@ export default class addressLookup {
 
   main()
   {
-    atk.mapService.getGoogleApi().then( (google) => {
+    atk.mapService.loadGoogleApi().then( (google) => {
       this.initAutocomplete(google);
       this.$input.on('keydown', function(e) {
           if (e.keyCode === 13){
@@ -77,14 +77,16 @@ export default class addressLookup {
    * Collect field in form according to map settings.
    */
   initField() {
-    let fields;
-    if (this.settings.fieldMap.length === 0) {
-      fields = this.getInputsField();
-    } else {
-      fields = this.getMappedFields(this.settings.fieldMap);
-    }
+    const inputs = this.getInputsField().map( input => {
+      const map = this.settings.fieldMap.filter( field => field.name === input.name);
+      if (map.length) {
+        input.value = map[0].value;
+      }
+
+      return input;
+    });
     // remove ourself from the list.
-    this.fields = fields.filter(field => field.name !== this.$input.attr('name'));
+    this.fields = inputs.filter(input => input.name !== this.$input.attr('name'));
   }
 
   /**

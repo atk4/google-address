@@ -35,7 +35,7 @@ class MapService {
    *
    * @param callback
    */
-  loadGoogleMapCallback(callback = () => {console.log('load')}) {
+  loadGoogleApiCallback(callback = () => {console.log('load')}) {
     this.map.loader.loadCallback(callback);
   }
 
@@ -43,7 +43,7 @@ class MapService {
    * Get google api.
    * @returns {Promise}
    */
-  getGoogleApi() {
+  loadGoogleApi() {
     return this.map.loader.load();
   }
 }

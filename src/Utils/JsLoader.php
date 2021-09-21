@@ -33,6 +33,9 @@ class JsLoader
     /** @var string */
     public static $language = 'en';
 
+    /** @var array Google Map options */
+    public static $mapOptions = [];
+
 
     public static function setGoogleApiKey(string $key): void
     {
@@ -63,12 +66,12 @@ class JsLoader
                 throw new Exception('Google map Api Key not set.');
             }
 
-            $app->layout->js(true, (new JsChain('atk.mapService'))->setMapLoader([
+            $app->layout->js(true, (new JsChain('atk.mapService'))->setMapLoader(array_merge([
                  'apiKey' => self::$apiKey,
                  'version' => self::$apiVerstion,
                  'libraries' => self::$apiLibraries,
                  'language' => self::$language,
-             ]));
+             ], self::$mapOptions)));
 
             self::$isLoaded = true;
         }

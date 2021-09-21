@@ -1,22 +1,21 @@
-/* global _ATK_GOOGLE_API_VERSION_:true, */
-import { Loader } from "@googlemaps/js-api-loader";
+/* global _ATK_GOOGLE_VERSION_:true, */
+import { Loader } from '@googlemaps/js-api-loader';
 
 /**
  * Singleton class for handling google map api.
  */
 class MapService {
-
-  static getInstance() {
+  static getInstance () {
     return this.instance;
   }
 
-  constructor() {
+  constructor () {
     if (!this.instance) {
       this.instance = this;
       this.version = () => _ATK_GOOGLE_VERSION_;
       this.map = {
         api: null,
-        loader: null,
+        loader: null
       };
     }
     return this.instance;
@@ -26,7 +25,7 @@ class MapService {
    * Set map loader options.
    * @param $options
    */
-  setMapLoader($options) {
+  setMapLoader ($options) {
     this.map.loader = new Loader($options);
   }
 
@@ -35,7 +34,7 @@ class MapService {
    *
    * @param callback
    */
-  loadGoogleApiCallback(callback = () => {console.log('load')}) {
+  loadGoogleApiCallback (callback = () => { console.log('load'); }) {
     this.map.loader.loadCallback(callback);
   }
 
@@ -43,12 +42,12 @@ class MapService {
    * Get google api.
    * @returns {Promise}
    */
-  loadGoogleApi() {
+  loadGoogleApi () {
     return this.map.loader.load();
   }
 }
 
-let mapService = new MapService();
+const mapService = new MapService();
 Object.freeze(mapService);
 
 export default mapService;

@@ -28,8 +28,7 @@ import atk from 'atk';
  *
  */
 export default class addressLookup {
-
-  constructor(element, options) {
+  constructor (element, options) {
     this.$el = $(element);
     this.$input = this.$el.find('input');
     this.settings = options;
@@ -38,16 +37,15 @@ export default class addressLookup {
     this.main();
   }
 
-  main()
-  {
-    atk.mapService.loadGoogleApi().then( (google) => {
+  main () {
+    atk.mapService.loadGoogleApi().then((google) => {
       this.initAutocomplete(google);
-      this.$input.on('keydown', function(e) {
-          if (e.keyCode === 13){
-            e.preventDefault();
-            e.stopPropagation();
-          }
-        });
+      this.$input.on('keydown', function (e) {
+        if (e.keyCode === 13) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      });
     });
 
     this.initField();
@@ -56,15 +54,15 @@ export default class addressLookup {
   /**
    * Initialize lookup input to Google autocomplete.
    */
-  initAutocomplete(google) {
+  initAutocomplete (google) {
     this.autocomplete = new google.maps.places.Autocomplete(this.$input[0]);
     if (this.settings.options) {
       this.autocomplete.setOptions(this.settings.options);
     }
     if (this.settings.countryLimit) {
-      this.autocomplete.setComponentRestrictions({country: this.settings.countryLimit});
+      this.autocomplete.setComponentRestrictions({ country: this.settings.countryLimit });
     }
-    this.autocomplete.setTypes(this.settings.types)
+    this.autocomplete.setTypes(this.settings.types);
     if (this.settings.useBrowserLocation) {
       this.geoLocate();
     }
@@ -76,9 +74,9 @@ export default class addressLookup {
   /**
    * Collect field in form according to map settings.
    */
-  initField() {
-    const inputs = this.getInputsField().map( input => {
-      const map = this.settings.fieldMap.filter( field => field.name === input.name);
+  initField () {
+    const inputs = this.getInputsField().map(input => {
+      const map = this.settings.fieldMap.filter(field => field.name === input.name);
       if (map.length) {
         input.value = map[0].value;
       }
@@ -94,14 +92,14 @@ export default class addressLookup {
    * in order for autocomplete to look for address around user area first.
    * Require https.
    */
-  geoLocate() {
+  geoLocate () {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        let geolocation = {
+        const geolocation = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        let circle = new google.maps.Circle({
+        const circle = new google.maps.Circle({
           center: geolocation,
           radius: position.coords.accuracy
         });
@@ -115,13 +113,13 @@ export default class addressLookup {
    *
    * @param place A google place object.
    */
-  setInputsValue(place) {
+  setInputsValue (place) {
     this.fields.forEach((field) => {
       field.input.val('');
     });
 
-    //return if we do not have an address_components
-    if (!place?.address_components){
+    // return if we do not have an address_components
+    if (!place?.address_components) {
       this.$input.val('');
 
       return;
@@ -130,15 +128,14 @@ export default class addressLookup {
     this.fields.forEach((field) => {
       field.input.val(this.getFieldValue(field.value, place));
     });
-
   }
 
-  getFieldValue(value, place) {
+  getFieldValue (value, place) {
     let fieldValue = '';
     value.def.forEach((comp, idx) => {
-      fieldValue += (comp.type === 'lat' || comp.type === 'lng') ?
-        this.getLatLngFromPlace(comp, place) :
-        this.getAddressComponentFromPlace(comp, place);
+      fieldValue += (comp.type === 'lat' || comp.type === 'lng')
+        ? this.getLatLngFromPlace(comp, place)
+        : this.getAddressComponentFromPlace(comp, place);
       if (idx < value.def.length - 1 && value.glue) {
         fieldValue += value.glue;
       }
@@ -147,14 +144,14 @@ export default class addressLookup {
     return fieldValue;
   }
 
-  getAddressComponentFromPlace(comp, place) {
+  getAddressComponentFromPlace (comp, place) {
     const addressComponents = place.address_components.filter(acomp => acomp.types.includes(comp.type));
     const value = addressComponents[0]?.[comp.prop];
 
-    return value ? value : '';
+    return value || '';
   }
 
-  getLatLngFromPlace(comp, place) {
+  getLatLngFromPlace (comp, place) {
     return place.geometry.location[comp.type]();
   }
 
@@ -165,9 +162,9 @@ export default class addressLookup {
    * @param controls
    * @returns {*}
    */
-  getMappedFields(controls) {
+  getMappedFields (controls) {
     return controls.map(control => {
-      return {input: this.$el.parents(this.settings.formSelector).find('input[name="' + control.name + '"]'), ...control};
+      return { input: this.$el.parents(this.settings.formSelector).find('input[name="' + control.name + '"]'), ...control };
     });
   }
 
@@ -177,16 +174,16 @@ export default class addressLookup {
    * This is normally use when field name in form directly correspond to Google map property name.
    *
    */
-  getInputsField() {
-     return Array.from(this.$el.parents(this.settings.formSelector).find('input'), (input) => {
-       return {
-         input: $(input),
-         name: $(input).attr('name'),
-         value: {
-           def: [{type: $(input).attr('name'), prop: this.settings.useLongName ? 'long_name' : 'short_name'}]
-         }
-       }
-     });
+  getInputsField () {
+    return Array.from(this.$el.parents(this.settings.formSelector).find('input'), (input) => {
+      return {
+        input: $(input),
+        name: $(input).attr('name'),
+        value: {
+          def: [{ type: $(input).attr('name'), prop: this.settings.useLongName ? 'long_name' : 'short_name' }]
+        }
+      };
+    });
   }
 }
 
@@ -198,5 +195,5 @@ addressLookup.DEFAULTS = {
   countryLimit: null,
   useLongName: true,
   fieldMap: [],
-  glue: ' ',
+  glue: ' '
 };

@@ -1,5 +1,3 @@
-/*global __dirname, require, module*/
-
 const webpack = require('webpack');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -16,7 +14,7 @@ module.exports = (env) => {
   const prodPerformance = {
     hints: false,
     maxEntrypointSize: 640000,
-    maxAssetSize: 640000,
+    maxAssetSize: 640000
   };
 
   return {
@@ -30,34 +28,34 @@ module.exports = (env) => {
       library: libraryName,
       libraryTarget: 'umd',
       libraryExport: 'default',
-      umdNamedDefine: true,
+      umdNamedDefine: true
     },
     optimization: {
       splitChunks: {
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-          },
-        },
+            name: 'vendors'
+          }
+        }
       },
       minimizer: [
         new TerserPlugin({
           terserOptions: {
             output: {
-              comments: false,
-            },
+              comments: false
+            }
           },
-          extractComments: false,
-        }),
-      ],
+          extractComments: false
+        })
+      ]
     },
     module: {
       rules: [
         {
           test: /(\.jsx|\.js)$/,
           loader: 'babel-loader',
-          exclude: /(node_modules|bower_components)/,
+          exclude: /(node_modules|bower_components)/
         },
         // this will apply to both plain `.css` files
         // AND `<style>` blocks in `.vue` files
@@ -65,26 +63,26 @@ module.exports = (env) => {
           test: /\.css$/,
           use: [
             'style-loader',
-            'css-loader',
-          ],
-        },
-      ],
+            'css-loader'
+          ]
+        }
+      ]
     },
     externals: { atk: 'atk', jquery: 'jQuery' },
     resolve: {
       modules: [
         path.resolve(__dirname, 'src/'),
-        'node_modules',
+        'node_modules'
       ],
       extensions: [
         '.json',
-        '.js',
-      ],
+        '.js'
+      ]
     },
     plugins: [
       new webpack.DefinePlugin({
-        _ATK_GOOGLE_VERSION_: JSON.stringify(packageVersion),
+        _ATK_GOOGLE_VERSION_: JSON.stringify(packageVersion)
       })
-    ],
+    ]
   };
 };

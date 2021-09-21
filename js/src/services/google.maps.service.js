@@ -4,7 +4,7 @@ import { Loader } from '@googlemaps/js-api-loader';
 /**
  * Singleton class for handling google map api.
  */
-class MapService {
+class GoogleMapsService {
   static getInstance () {
     return this.instance;
   }
@@ -47,7 +47,7 @@ class MapService {
   }
 }
 
-const mapService = new MapService();
+const mapService = new GoogleMapsService();
 Object.freeze(mapService);
 
 export default mapService;

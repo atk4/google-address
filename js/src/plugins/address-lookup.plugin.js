@@ -27,7 +27,7 @@ import atk from 'atk';
  *  }]
  *
  */
-export default class addressLookup {
+export default class addressLookupPlugin {
   constructor (element, options) {
     this.$el = $(element);
     this.$input = this.$el.find('input');
@@ -187,7 +187,7 @@ export default class addressLookup {
   }
 }
 
-addressLookup.DEFAULTS = {
+addressLookupPlugin.DEFAULTS = {
   options: null,
   formSelector: 'div.ui.form',
   types: ['address'],

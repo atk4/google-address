@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Atk4\GoogleAddress\Form\Control;
@@ -32,7 +33,6 @@ class AddressLookup extends Line
      * $ga->onCompleteSet($addressInput, Components::with(Property::of(Property::STREET_NUMBER)));
      *
      *    Will fill $addressInput control with 'street_number' value return by Google Place AutoComplete.
-     *
      */
     public function onCompleteSet(Control $formControl, Build $builder): self
     {
@@ -44,7 +44,6 @@ class AddressLookup extends Line
     /**
      * Restricts predictions to the specified country (ISO 3166-1 Alpha-2 country code, case insensitive).
      * E.g., us, br, au. An array of up to 5 country code strings.
-     *
      */
     public function setCountryLimit(array $limit): self
     {

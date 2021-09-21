@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Atk4\GoogleAddress\Utils;
@@ -15,7 +16,7 @@ class JsLoader
     /** @var string Javascript file location. */
     public static $cdn = 'https://cdn.jsdelivr.net/gh/atk4/google-address';
 
-    /** @var string Javascript file version.  */
+    /** @var string Javascript file version. */
     public static $version = '2.0.0';
 
     /** @var bool */
@@ -36,7 +37,6 @@ class JsLoader
     /** @var array Google Map options */
     public static $mapOptions = [];
 
-
     public static function setGoogleApiKey(string $key): void
     {
         self::$apiKey = $key;
@@ -55,8 +55,8 @@ class JsLoader
     {
         if (!self::$isLoaded) {
             if (!$locationUrl) {
-                $cdn         = self::$cdn;
-                $version     = self::$version;
+                $cdn = self::$cdn;
+                $version = self::$version;
                 $locationUrl = "{$cdn}@{$version}/public/atk-google-maps.min.js";
             }
 
@@ -67,11 +67,11 @@ class JsLoader
             }
 
             $app->layout->js(true, (new JsChain('atk.mapService'))->setMapLoader(array_merge([
-                 'apiKey' => self::$apiKey,
-                 'version' => self::$apiVerstion,
-                 'libraries' => self::$apiLibraries,
-                 'language' => self::$language,
-             ], self::$mapOptions)));
+                'apiKey' => self::$apiKey,
+                'version' => self::$apiVerstion,
+                'libraries' => self::$apiLibraries,
+                'language' => self::$language,
+            ], self::$mapOptions)));
 
             self::$isLoaded = true;
         }

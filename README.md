@@ -44,7 +44,7 @@ $street = $f->addControl(Type::STREET_NUMBER);
 ```
 
 When a return value from the Places autocomplete dropdown is select, then `$street` control value will be set  
-using result form Place Api.
+using result from the Place Api.
 
 ### Specifying value to specific control.
 

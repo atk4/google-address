@@ -17,7 +17,7 @@ class JsLoader
     public static $cdn = 'https://cdn.jsdelivr.net/gh/atk4/google-address';
 
     /** @var string Javascript file version. */
-    public static $version = '2.0.0';
+    public static $version = '2.0.1';
 
     /** @var bool */
     private static $isLoaded = false;

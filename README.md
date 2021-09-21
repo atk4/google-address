@@ -21,55 +21,57 @@ Then form field is populate automatically when a place is select from the dropdo
 
 ## Usage
 
-Simply add the google-address field in your form with your existing address field.
+First setup your Google Api developer key within the map loader.
 
 ```
-$f->addField('map_search', [new atk4\GoogleAddress\AddressLookup(['apiKey' => $key])]);
+JsLoader::setGoogleApiKey('YOUR_API_KEY');
 ```
 
-Note: Do not forget to set your Google developper api key. 
-
-The autocomplete will populate other field data in your form automatically if fields in form 
-use the same name as the google address_components field.
-
-### Specifying field mapping
-
-You can set which value from the google address_component value will be filled in your form's input field by using
-AddressLookup::mapGoogleComponentToField() method.
-
-The method accepts three arguments: 
- - $fieldName: the name of the field place in form,
- - $googleComponent: the googleComponent result to set in fieldName,
-    - either pass a string or an array of googleComponent field name. When
-    passing an array of components, these will be concatenate using the third
-    arguments $glue.
- - $glue: a string to use as a glue betweeen component value.   
- 
-### Example
-
-This will retrieve the content of street_number from google place result and insert it in field named 'address' in form.
-```
-$ga = $f->addField('map_search', [new atk4\GoogleAddress\AddressLookup(['apiKey' => $key])]);
-
-$ga->mapGoogleComponentToField('address', 'street_number');
-```
-
-You may combine multiple google address_components into one form field as well,
-
-Here the address field will contain street_number and route seperate by the glue value. 
-You may specify as many google address_component as needed to be concatenate to one value.
-```
-$ga->mapGoogleComponentToField('address', ['street_number', 'route'], $glue);
-```
-
-Finally, A google address_component may have two values, a short_name or a long_name value. Ex, a country address_component can be specify using 
-the long name, i.e United Kingdom or it's short name 'UK'. 
-You can choose to use the long or short name value by specifying it in $googleCompents.
-
-
-This will concatenate the google address_component country by using it' short name and the postal_code value.
-ex: 'UK / W1C 1JT'
+Simply add the google-address form control in your form.
 
 ```
-$ga->mapGoogleComponentToField('country', ['country' => 'short_name', 'postal_code'], ' / ');
+$f->addControl('map_search', [new atk4\GoogleAddress\AddressLookup()]);
 ```
+
+When added to the form, the control will try to populate other inputs in form 
+with value return by the Places Api. 
+For this to happen, a control name must match any of the Types name return by Google Places api.
+
+Consider adding this control to your form:
+
+```
+$street = $f->addControl(Type::STREET_NUMBER);
+```
+
+When a return value from the Places autocomplete dropdown is select, then `$street` control value will be set  
+using result form Place Api.
+
+### Specifying value to specific control.
+
+```
+AddressLookup::onCompleteSet(Control $formControl, Build $builder): self
+```
+
+This method will try to set the `$formControl` with value return by `$builder` when user select
+a place.
+
+#### Example
+
+Let's say form has a control for which you would like to set its value with return results 
+from the Places api. Furthermore, you would like to use multiple values from Places Api in 
+order to set the control value with. 
+
+For example the street_number and the route value.
+
+```
+/** @var AddressLookup $ga */
+$ga = $form->addControl('map_search', [AddressLookup::class]);
+$address = $form->addControl('address');
+
+// '444 street name'
+$a_value = Build::with(Value::of(Type::STREET_NUMBER))->concat(Value::of(Type::ROUTE))->glueWith(' ');
+
+$ga->onCompleteSet($address, $a_value);
+```
+
+See demos file for more information.

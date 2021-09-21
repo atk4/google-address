@@ -1,36 +1,35 @@
 <?php
 
+declare(strict_types=1);
+namespace Atk4\GoogleAddress\Model;
 
-namespace atk4\GoogleAddress\Model;
+use Atk4\Data\Model;
+use Atk4\GoogleAddress\Form\Control\AddressLookup;
+use Atk4\GoogleAddress\Utils\Type;
 
-use atk4\data\Model;
-use atk4\GoogleAddress\AddressLookup;
-
+/**
+ * Model sample.
+ */
 class Address extends Model
 {
     public $table = 'your_address_table_name_here';
-    public $apiKey = 'YOUR_GOOGLE_API_KEY_HERE';
 
-    public function init()
+    protected function init(): void
     {
         parent::init();
 
-        $this->addField('map_search', ['never_save' => true, 'ui' => ['form' => [new AddressLookup(['apiKey' => $this->apiKey])]]]);
+        $this->addField('map_search', ['never_save' => true, 'ui' => ['form' => [AddressLookup::class]]]);
 
-        $this->addField('street_number');
-        $this->addField('route');
-        $this->addField('locality');
-        $this->addField('sub_locality_level_1');
-        $this->addField('postal_town');
-        $this->addField('administrative_area_level_2');
-        $this->addField('administrative_area_level_1');
-        $this->addField('country');
-        $this->addField('postal_code');
-        $this->addField('lat');
-        $this->addField('lng');
-
-        $this->addHook('beforeSave', function($m) {
-            $m->getElement('map_search')->never_persist = true;
-        });
+        $this->addField(Type::STREET_NUMBER);
+        $this->addField(Type::ROUTE);
+        $this->addField(Type::LOCALITY);
+        $this->addField(Type::SUB_LOCALITY_1);
+        $this->addField(Type::POSTAL_TOWN);
+        $this->addField(Type::ADMIN_LEVEL_1);
+        $this->addField(Type::ADMIN_LEVEL_2);
+        $this->addField(Type::COUNTRY);
+        $this->addField(Type::POSTAL_CODE);
+        $this->addField(Type::LAT);
+        $this->addField(Type::LNG);
     }
 }

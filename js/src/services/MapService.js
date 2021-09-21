@@ -1,7 +1,9 @@
+/* global _ATK_GOOGLE_API_VERSION_:true, */
+import { Loader } from "@googlemaps/js-api-loader";
+
 /**
  * Singleton class for handling google map api.
  */
-
 class MapService {
 
   static getInstance() {
@@ -11,34 +13,38 @@ class MapService {
   constructor() {
     if (!this.instance) {
       this.instance = this;
-      this.map = {};
+      this.version = () => _ATK_GOOGLE_VERSION_;
+      this.map = {
+        api: null,
+        loader: null,
+      };
     }
     return this.instance;
   }
 
   /**
-   * Callback associate with the loading of google api.
-   * Resolve a Promise when callback is executed.
-   * You can then place your init function inside apiLoaded then() method.
-   *
-   * ex: in order to check for api to be fully loaded prior to fire things up:
-   *    mapService.map.apiLoaded.then(function(){
-   *       //Api is loaded and ready, do your stuff.
-   *    });
-   *
+   * Set map loader options.
+   * @param $options
    */
-  initGoogleApi() {
-    this.map.apiLoaded = Promise.resolve(true);
+  setMapLoader($options) {
+    this.map.loader = new Loader($options);
   }
 
   /**
-   * Return an autocomplete field.
+   * Get google using a callback.
    *
-   * @param el The html input element to associate autocomplete with.
-   * @returns {google.maps.places.Autocomplete}
+   * @param callback
    */
-  getAutocomplete(el) {
-    return new google.maps.places.Autocomplete(el);
+  loadGoogleApiCallback(callback = () => {console.log('load')}) {
+    this.map.loader.loadCallback(callback);
+  }
+
+  /**
+   * Get google api.
+   * @returns {Promise}
+   */
+  loadGoogleApi() {
+    return this.map.loader.load();
   }
 }
 

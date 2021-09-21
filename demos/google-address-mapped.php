@@ -5,10 +5,10 @@ declare(strict_types=1);
 /** @var \Atk4\Ui\App $app */
 
 use Atk4\GoogleAddress\Form\Control\AddressLookup;
-use Atk4\GoogleAddress\Utils\Value;
-use Atk4\GoogleAddress\Utils\Type;
 use Atk4\GoogleAddress\Utils\Build;
 use Atk4\GoogleAddress\Utils\JsLoader;
+use Atk4\GoogleAddress\Utils\Type;
+use Atk4\GoogleAddress\Utils\Value;
 use Atk4\Ui\Form;
 
 // Set Google developer key.
@@ -19,7 +19,6 @@ $address2Value = Build::with(Value::of(Type::ADMIN_LEVEL_1));
 $countryValue = Build::with(Value::of(Type::COUNTRY))->concat(Value::of(Type::POSTAL_CODE))->glueWith(' / ');
 
 $latLngValue = Build::with(Value::of(Type::LAT))->concat(Value::of(Type::LNG))->glueWith(':');
-
 
 $form = Form::addTo($app);
 

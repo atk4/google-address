@@ -12,10 +12,10 @@ namespace Atk4\GoogleAddress\Utils;
  */
 class Build
 {
-    /** @var Value[]  */
+    /** @var Value[] */
     private $components = [];
 
-    /** @var string  */
+    /** @var string */
     private $glue = '';
 
     private function __construct(array $components)

@@ -9,13 +9,13 @@ class Value
     /** @var string */
     private $addressType;
 
-    /** @var string  Google Map property to use. (long_name or short_name) */
+    /** @var string Google Map property to use. (long_name or short_name) */
     private $property;
 
     private function __construct(string $addressType, string $property)
     {
         $this->addressType = $addressType;
-        $this->property    = $property;
+        $this->property = $property;
     }
 
     public static function of(string $addressType, string $property = 'long_name'): self

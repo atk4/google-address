@@ -19,7 +19,11 @@ class Address extends Model
     {
         parent::init();
 
-        $this->addField('map_search', ['never_save' => true, 'ui' => ['form' => [AddressLookup::class]]]);
+        $this->addField('map_search', [
+            'never_save' => true,
+            'never_persist' => true,
+            'ui' => ['editable' => true, 'visible' => false, 'form' => [AddressLookup::class]],
+        ]);
 
         $this->addField(Type::STREET_NUMBER);
         $this->addField(Type::ROUTE);

@@ -26,7 +26,11 @@ class GoogleMapsService {
    * @param $options
    */
   setMapLoader ($options) {
-    this.map.loader = new Loader($options);
+    if (!this.map.loader) {
+      this.map.loader = new Loader($options);
+    } else {
+      console.warn('Loader already set with libraries: ', this.map.loader.libraries);
+    }
   }
 
   /**
@@ -34,7 +38,11 @@ class GoogleMapsService {
    *
    * @param callback
    */
-  loadGoogleApiCallback (callback = () => { console.log('load'); }) {
+  loadGoogleApiCallback (callback = () => { console.log('load'); }, $options = {}) {
+    if (!this.map.loader) {
+      this.setMapLoader($options);
+    }
+
     this.map.loader.loadCallback(callback);
   }
 
@@ -42,7 +50,11 @@ class GoogleMapsService {
    * Get google api.
    * @returns {Promise}
    */
-  loadGoogleApi () {
+  loadGoogleApi ($options) {
+    if (!this.map.loader) {
+      this.setMapLoader($options);
+    }
+
     return this.map.loader.load();
   }
 }

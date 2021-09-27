@@ -1,6 +1,6 @@
 {
   "name": "atk-google-address",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Agile Toolkit - Google Place interface for address.",
   "main": "lib/atk-google-address.js",
   "scripts": {

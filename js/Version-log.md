@@ -1,5 +1,12 @@
 ## JS Version Change
 
+### 2.1.0 (2021-09-27)
+   - allow setting map loader via loadGoogleApi method.
+   Usage:
+   ```
+   atk.mapService.loadGoogleApi($loaderOptions).then()
+   ```
+
 ### 2.0.1 (2021-09-21)
    refactor file name.
 

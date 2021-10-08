@@ -68,6 +68,10 @@ export default class addressLookupPlugin {
     }
     this.autocomplete.addListener('place_changed', () => {
       this.setInputsValue(this.autocomplete.getPlace());
+      if (this.settings.autoClear) {
+        this.$input.val('');
+      }
+      this.settings.callback(this.autocomplete);
     });
   }
 
@@ -175,7 +179,18 @@ export default class addressLookupPlugin {
    *
    */
   getInputsField () {
-    return Array.from(this.$el.parents(this.settings.formSelector).find('input'), (input) => {
+    const all = this.$el.parents(this.settings.formSelector).find('input').filter((idx, input) => {
+      // include inputs wich need to be map.
+      if (this.settings.fieldMap.filter(field => field.name === input.getAttribute('name')).length > 0) {
+        return true;
+      }
+      // include supported default inputs.
+      if (this.settings.supportFields.filter(fieldName => fieldName === input.getAttribute('name')).length > 0) {
+        return true;
+      }
+      return false;
+    });
+    return Array.from(all, (input) => {
       return {
         input: $(input),
         name: $(input).attr('name'),
@@ -188,12 +203,54 @@ export default class addressLookupPlugin {
 }
 
 addressLookupPlugin.DEFAULTS = {
-  options: null,
+  options: null, // the google autocomplete options.
   formSelector: 'div.ui.form',
+  callback: (ac) => {},
   types: ['address'],
   useBrowserLocation: true,
   countryLimit: null,
   useLongName: true,
   fieldMap: [],
-  glue: ' '
+  glue: ' ',
+  autoClear: true,
+  supportFields : [
+    'lat',
+    'lng',
+    'street_number',
+    'route',
+    'country',
+    'administrative_area_level_1',
+    'administrative_area_level_2',
+    'administrative_area_level_3',
+    'administrative_area_level_4',
+    'administrative_area_level_5',
+    'colloquial_area',
+    'locality',
+    'sublocality',
+    'sublocality_level_1',
+    'sublocality_level_2',
+    'sublocality_level_3',
+    'sublocality_level_4',
+    'sublocality_level_5',
+    'neighborhood',
+    'premise',
+    'subpremise',
+    'plus_code',
+    'postal_code',
+    'natural_feature',
+    'airport',
+    'park',
+    'point_of_interest',
+    'floor',
+    'establishment',
+    'landmark',
+    'parking',
+    'post_box',
+    'postal_town',
+    'room',
+    'street_address',
+    'bus_station',
+    'train_station',
+    'transit_station',
+  ],
 };

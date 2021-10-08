@@ -27,6 +27,9 @@ class AddressLookup extends Line
     /** @var array Limit search result to specific countries. */
     public $countryLimit = [];
 
+    /** @var array Any of the plugin settings. */
+    public $settings = [];
+
     /**
      * Set a form control to google address component property value when a result is selected.
      *
@@ -72,38 +75,38 @@ class AddressLookup extends Line
         $this->types = $types;
     }
 
-    private function getLookupOptions(): array
+    private function getLookupSettings(): array
     {
-        $options = [];
-        $options['formSelector'] = '#' . $this->form->name;
+        $settings = [];
+        $settings['formSelector'] = '#' . $this->form->name;
         if ($this->controlMap) {
             foreach ($this->controlMap as $k => $comp) {
-                $options['fieldMap'][] = ['name' => $comp['name'], 'value' => $comp['value']->getBuiltValue()];
+                $settings['fieldMap'][] = ['name' => $comp['name'], 'value' => $comp['value']->getBuiltValue()];
             }
         }
         if ($this->countryLimit) {
             if (is_array($this->countryLimit)) {
-                $options['countryLimit'] = $this->countryLimit;
+                $settings['countryLimit'] = $this->countryLimit;
             } else {
-                $options['countryLimit'] = [$this->countryLimit];
+                $settings['countryLimit'] = [$this->countryLimit];
             }
         }
         if ($this->types) {
-            $options['types'] = [$this->types];
+            $settings['types'] = [$this->types];
         }
 
         if ($this->useBrowserLocation) {
-            $options['useBrowserLocation'] = true;
+            $settings['useBrowserLocation'] = true;
         }
 
-        return $options;
+        return array_merge($this->settings, $settings);
     }
 
     public function renderView(): void
     {
         JsLoader::load($this->getApp());
 
-        $this->js(true)->atkAddressLookup($this->getLookupOptions());
+        $this->js(true)->atkAddressLookup($this->getLookupSettings());
 
         parent::renderView();
     }

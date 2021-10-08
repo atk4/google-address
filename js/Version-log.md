@@ -1,5 +1,11 @@
 ## JS Version Change
 
+### 2.2.0 (2021-10-08)
+
+plugin address-lookup:
+   - fix clearing input not related;
+   - add callback function after a place is select.
+
 ### 2.1.0 (2021-09-27)
    - allow setting map loader via loadGoogleApi method.
    Usage:

@@ -16,19 +16,19 @@ use Atk4\Ui\Form\Control\Line;
 class AddressLookup extends Line
 {
     /** @var array An array of Google address_components to fill specific controls with. */
-    public $controlMap = [];
+    public array $controlMap = [];
 
     /** @var array types of predictions to be returned as specify in Google place api. */
-    public $types = [];
+    public array $types = [];
 
     /** @var bool Whether the place api will use bounds set by the browser location. */
-    public $useBrowserLocation = false;
+    public bool $useBrowserLocation = false;
 
     /** @var array Limit search result to specific countries. */
-    public $countryLimit = [];
+    public array $countryLimit = [];
 
     /** @var array Any of the plugin settings. */
-    public $settings = [];
+    public array $settings = [];
 
     /**
      * Set a form control to google address component property value when a result is selected.
@@ -70,29 +70,28 @@ class AddressLookup extends Line
      * Set place result types.
      * https://developers.google.com/places/supported_types#table3
      */
-    public function setTypes(array $types): void
+    public function setTypes(array $types): self
     {
         $this->types = $types;
+
+        return $this;
     }
 
     private function getLookupSettings(): array
     {
         $settings = [];
         $settings['formSelector'] = '#' . $this->form->name;
-        if ($this->controlMap) {
-            foreach ($this->controlMap as $k => $comp) {
-                $settings['fieldMap'][] = ['name' => $comp['name'], 'value' => $comp['value']->getBuiltValue()];
-            }
+
+        foreach ($this->controlMap as $k => $comp) {
+            $settings['fieldMap'][] = ['name' => $comp['name'], 'value' => $comp['value']->getBuiltValue()];
         }
-        if ($this->countryLimit) {
-            if (is_array($this->countryLimit)) {
-                $settings['countryLimit'] = $this->countryLimit;
-            } else {
-                $settings['countryLimit'] = [$this->countryLimit];
-            }
+
+        if (!empty($this->countryLimit)) {
+            $settings['countryLimit'] = $this->countryLimit;
         }
-        if ($this->types) {
-            $settings['types'] = [$this->types];
+
+        if (!empty($this->types)) {
+            $settings['types'] = $this->types;
         }
 
         if ($this->useBrowserLocation) {
@@ -106,7 +105,7 @@ class AddressLookup extends Line
     {
         JsLoader::load($this->getApp());
 
-        $this->js(true)->atkAddressLookup($this->getLookupSettings());
+        $this->js(true)->AddressLookup($this->getLookupSettings());
 
         parent::renderView();
     }

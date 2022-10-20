@@ -39,7 +39,7 @@ class AddressLookup extends Line
      */
     public function onCompleteSet(Control $formControl, Build $builder): self
     {
-        $this->controlMap[] = ['name' => $formControl->short_name, 'value' => $builder];
+        $this->controlMap[] = ['name' => $formControl->shortName, 'value' => $builder];
 
         return $this;
     }

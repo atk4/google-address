@@ -7,7 +7,7 @@ module.exports = (env) => {
   // determine which mode
   const isProduction = env.production;
   const srcDir = path.resolve(__dirname, './src');
-  const publicDir = path.resolve(__dirname, '../public');
+  const publicDir = path.resolve(__dirname, '../assets');
   const libraryName = 'atk.google.maps';
   const filename = 'atk-google-maps';
 

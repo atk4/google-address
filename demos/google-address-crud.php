@@ -1,18 +1,22 @@
 <?php
-/**
- * Demonstrate use with Crud.
- * JsLoader::load() is need for AddressLookup to work in ModalExecutor.
- */
+
 declare(strict_types=1);
 
-/** @var \Atk4\Ui\App $app */
+namespace Atk4\GoogleAddress\Demos;
 
 use Atk4\GoogleAddress\Model\Address;
 use Atk4\GoogleAddress\Utils\JsLoader;
+use Atk4\Ui\App;
 use Atk4\Ui\Crud;
 
-// Set Google developer key.
-JsLoader::setGoogleApiKey('');
+/*
+ * Demonstrate use with Crud.
+ * JsLoader::load() is need for AddressLookup to work in ModalExecutor.
+ */
+
+/** @var App $app */
+require_once __DIR__ . '/init-app.php';
+
 // Load map api.
 JsLoader::load($app);
 

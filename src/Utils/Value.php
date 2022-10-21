@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Atk4\GoogleAddress\Utils;
 
-class Value
+final class Value
 {
-    /** @var string */
-    private $addressType;
+    private string $addressType;
 
-    /** @var string Google Map property to use. (long_name or short_name) */
-    private $property;
+    /** Google Map property to use. (long_name or short_name) */
+    private string $property;
 
     private function __construct(string $addressType, string $property)
     {
@@ -33,7 +32,10 @@ class Value
         return $this->property;
     }
 
-    public function getDefinition()
+    /**
+     * @return array{type: string, prop: string}
+     */
+    public function getDefinition(): array
     {
         return ['type' => $this->addressType, 'prop' => $this->property];
     }

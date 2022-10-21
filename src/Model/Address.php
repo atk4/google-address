@@ -20,8 +20,8 @@ class Address extends Model
         parent::init();
 
         $this->addField('map_search', [
-            'never_save' => true,
-            'never_persist' => true,
+            'neverSave' => true,
+            'neverPersist' => true,
             'ui' => ['editable' => true, 'visible' => false, 'form' => [AddressLookup::class]],
         ]);
 

@@ -13,32 +13,31 @@ use Atk4\Ui\JsChain;
  */
 class JsLoader
 {
-    /** @var string Javascript file location. */
-    public static $cdn = 'https://cdn.jsdelivr.net/gh/atk4/google-address';
+    private static bool $isLoaded = false;
 
-    /** @var string Javascript file version. */
-    public static $version = '2.2.2';
+    /** The Google api developer key. */
+    protected static string $apiKey = '';
 
-    /** @var bool */
-    private static $isLoaded = false;
+    /** Default location of js file, use this if $locationUrl is not specified in JsLoader::load($app, '/new/path/to/js-file.min.js'); */
+    protected static string $defaultLocationUrl = '/assets/atk-google-maps.min.js';
 
-    /** @var string The google api developer key. */
-    protected static $apiKey = '';
-
-    /** @var string Google maps version. */
-    protected static $apiVerstion = 'quarterly';
+    /** Google maps version. */
+    protected static string $apiVerstion = 'quarterly';
 
     /** @var string[] Libraries to load with Google api. */
-    protected static $apiLibraries = ['places'];
+    protected static array $apiLibraries = ['places'];
 
-    /** @var array Google Map options as per https://googlemaps.github.io/js-api-loader/interfaces/LoaderOptions.html */
-    protected static $mapOptions = [];
+    /** @var array<string, int|string|string[]|mixed> Google Map options as per https://googlemaps.github.io/js-api-loader/interfaces/LoaderOptions.html */
+    protected static array $mapOptions = [];
 
     public static function setGoogleApiKey(string $key): void
     {
         self::$apiKey = $key;
     }
 
+    /**
+     * @param array<string, int|string|string[]|mixed> $options
+     */
     public static function setMapOptions(array $options): void
     {
         self::$mapOptions = $options;
@@ -56,15 +55,9 @@ class JsLoader
     public static function load(App $app, string $locationUrl = null): void
     {
         if (!self::$isLoaded) {
-            if (!$locationUrl) {
-                $cdn = self::$cdn;
-                $version = self::$version;
-                $locationUrl = "{$cdn}@{$version}/public/atk-google-maps.min.js";
-            }
+            $app->requireJs($locationUrl ?? self::$defaultLocationUrl);
 
-            $app->requireJs($locationUrl);
-
-            if (!self::$apiKey) {
+            if (self::$apiKey === '') {
                 throw new Exception('Google map Api Key not set.');
             }
 

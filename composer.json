@@ -1,22 +1,36 @@
 {
   "name": "atk4/google-address",
-  "type": "library",
   "description": "Google Place interface for address form.",
-  "keywords": ["atk4", "agile", "agile ui", "data", "framework"],
-  "homepage": "https://github.com/atk4/google-address",
   "license": "MIT",
-  "minimum-stability": "dev",
-  "prefer-stable": true,
+  "type": "library",
+  "keywords": [
+    "atk4",
+    "agile",
+    "agile ui",
+    "data",
+    "framework"
+  ],
   "authors": [
     {
       "name": "Alain Belair",
       "email": "belair.alain@gmail.com"
     }
   ],
+  "homepage": "https://github.com/atk4/google-address",
   "require": {
-    "atk4/ui": "~2.3 || ~3.0",
-    "php": ">=7.4.0"
+    "php": ">=7.4 <8.3",
+    "atk4/ui": "dev-develop"
   },
+  "require-dev": {
+    "ergebnis/composer-normalize": "^2.13",
+    "friendsofphp/php-cs-fixer": "^3.12",
+    "phpstan/extension-installer": "^1.1",
+    "phpstan/phpstan": "^1.0",
+    "phpstan/phpstan-deprecation-rules": "^1.0",
+    "phpstan/phpstan-strict-rules": "^1.3"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "Atk4\\GoogleAddress\\": "src/"
@@ -26,5 +40,16 @@
     "psr-4": {
       "Atk4\\GoogleAddress\\tests\\": "tests/"
     }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true,
+      "phpstan/extension-installer": true
+    },
+    "sort-packages": true
+  },
+  "require-release": {
+    "php": ">=7.4 <8.3",
+    "atk4/ui": "~4.0.0"
   }
 }

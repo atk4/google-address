@@ -15,19 +15,19 @@ use Atk4\Ui\Form\Control\Line;
  */
 class AddressLookup extends Line
 {
-    /** @var array An array of Google address_components to fill specific controls with. */
+    /** @var list<array{name:string,value:Build}> An array of Google address_components to fill specific controls with. */
     public array $controlMap = [];
 
-    /** @var array types of predictions to be returned as specify in Google place api. */
+    /** @var string[] of predictions to be returned as specify in Google place api. */
     public array $types = [];
 
-    /** @var bool Whether the place api will use bounds set by the browser location. */
+    /** the place api will use bounds set by the browser location. */
     public bool $useBrowserLocation = false;
 
-    /** @var array Limit search result to specific countries. */
+    /** @var string[] Limit search result to specific countries. */
     public array $countryLimit = [];
 
-    /** @var array Any of the plugin settings. */
+    /** @var string[] Any of the plugin settings. */
     public array $settings = [];
 
     /**
@@ -47,6 +47,8 @@ class AddressLookup extends Line
     /**
      * Restricts predictions to the specified country (ISO 3166-1 Alpha-2 country code, case insensitive).
      * E.g., us, br, au. An array of up to 5 country code strings.
+     *
+     * @param string[] $limit
      */
     public function setCountryLimit(array $limit): self
     {
@@ -66,9 +68,11 @@ class AddressLookup extends Line
         return $this;
     }
 
-    /*
+    /**
      * Set place result types.
      * https://developers.google.com/places/supported_types#table3
+     *
+     * @param string[] $types
      */
     public function setTypes(array $types): self
     {
@@ -77,6 +81,9 @@ class AddressLookup extends Line
         return $this;
     }
 
+    /**
+     * @return array{formSelector: string}
+     */
     private function getLookupSettings(): array
     {
         $settings = [];

@@ -10,14 +10,16 @@ namespace Atk4\GoogleAddress\Utils;
  * address lookup plugin concatenating each property using the specified
  * glue in order to set input value.
  */
-class Build
+final class Build
 {
     /** @var Value[] */
     private $components = [];
 
-    /** @var string */
-    private $glue = '';
+    private string $glue = '';
 
+    /**
+     * @param Value[] $components
+     */
     private function __construct(array $components)
     {
         $this->components = $components;
@@ -42,16 +44,19 @@ class Build
         return $this;
     }
 
+    /**
+     * @return array{
+     *     def: array<int, array{type: string, prop: string}>,
+     *     glue:string
+     * }
+     */
     public function getBuiltValue(): array
     {
-        $val = [];
-        foreach ($this->components as $prop) {
-            $val['def'][] = $prop->getDefinition();
-        }
-        if ($this->glue) {
-            $val['glue'] = $this->glue;
-        }
-
-        return $val;
+        return [
+            'def' => array_map(function(Value $value) {
+                return $value->getDefinition();
+            }, $this->components),
+            'glue' => $this->glue,
+        ];
     }
 }

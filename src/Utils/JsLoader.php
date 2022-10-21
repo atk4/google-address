@@ -13,32 +13,34 @@ use Atk4\Ui\JsChain;
  */
 class JsLoader
 {
-    /** @var string Javascript file location. */
-    public static $cdn = 'https://cdn.jsdelivr.net/gh/atk4/google-address';
+    /** Javascript file location. */
+    public static string $cdn = 'https://cdn.jsdelivr.net/gh/atk4/google-address';
 
-    /** @var string Javascript file version. */
-    public static $version = '4.0.0';
+    /** Javascript file version. */
+    public static string $version = '4.0.0';
 
-    /** @var bool */
-    private static $isLoaded = false;
+    private static bool $isLoaded = false;
 
-    /** @var string The google api developer key. */
-    protected static $apiKey = '';
+    /** The google api developer key. */
+    protected static string $apiKey = '';
 
-    /** @var string Google maps version. */
-    protected static $apiVerstion = 'quarterly';
+    /** Google maps version. */
+    protected static string $apiVerstion = 'quarterly';
 
     /** @var string[] Libraries to load with Google api. */
-    protected static $apiLibraries = ['places'];
+    protected static array $apiLibraries = ['places'];
 
-    /** @var array Google Map options as per https://googlemaps.github.io/js-api-loader/interfaces/LoaderOptions.html */
-    protected static $mapOptions = [];
+    /** @var array<string, int|string|string[]|mixed> Google Map options as per https://googlemaps.github.io/js-api-loader/interfaces/LoaderOptions.html */
+    protected static array $mapOptions = [];
 
     public static function setGoogleApiKey(string $key): void
     {
         self::$apiKey = $key;
     }
 
+    /**
+     * @param array<string, int|string|string[]|mixed> $options
+     */
     public static function setMapOptions(array $options): void
     {
         self::$mapOptions = $options;

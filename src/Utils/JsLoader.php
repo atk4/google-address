@@ -58,7 +58,8 @@ class JsLoader
     public static function load(App $app, string $locationUrl = null): void
     {
         if (!self::$isLoaded) {
-            if (!$locationUrl) {
+
+            if (null === $locationUrl) {
                 $cdn = self::$cdn;
                 $version = self::$version;
                 $locationUrl = "{$cdn}@{$version}/public/atk-google-maps.min.js";
@@ -66,7 +67,7 @@ class JsLoader
 
             $app->requireJs($locationUrl);
 
-            if (!self::$apiKey) {
+            if (self::$apiKey === '') {
                 throw new Exception('Google map Api Key not set.');
             }
 

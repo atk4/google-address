@@ -93,11 +93,11 @@ class AddressLookup extends Line
             $settings['fieldMap'][] = ['name' => $comp['name'], 'value' => $comp['value']->getBuiltValue()];
         }
 
-        if (!empty($this->countryLimit)) {
+        if ($this->countryLimit !== []) {
             $settings['countryLimit'] = $this->countryLimit;
         }
 
-        if (!empty($this->types)) {
+        if ($this->types !== []) {
             $settings['types'] = $this->types;
         }
 

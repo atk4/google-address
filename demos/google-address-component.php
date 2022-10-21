@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+namespace Atk4\GoogleAddress\Demos;
+
 use Atk4\GoogleAddress\Form\Control\AddressLookup;
 use Atk4\GoogleAddress\Utils\JsLoader;
 use Atk4\GoogleAddress\Utils\Type;
 use Atk4\Ui\Form;
 
-// @var \Atk4\Ui\App $app
+/** @var \Atk4\Ui\App $app */
 
 // Set Google developer key.
 JsLoader::setGoogleApiKey('');

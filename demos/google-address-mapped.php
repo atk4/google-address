@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Atk4\GoogleAddress\Demos;
+
 /** @var \Atk4\Ui\App $app */
 
 use Atk4\GoogleAddress\Form\Control\AddressLookup;

@@ -1,9 +1,12 @@
 <?php
+declare(strict_types=1);
+
+namespace Atk4\GoogleAddress\Demos;
+
 /**
  * Demonstrate use with Crud.
  * JsLoader::load() is need for AddressLookup to work in ModalExecutor.
  */
-declare(strict_types=1);
 
 /** @var \Atk4\Ui\App $app */
 

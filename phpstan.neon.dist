@@ -1,0 +1,18 @@
+includes:
+    - phar://phpstan.phar/conf/bleedingEdge.neon
+
+parameters:
+    level: 6
+    paths:
+        - ./
+    excludePaths:
+        - vendor/
+        - js/
+
+    ignoreErrors:
+        -
+            path: 'src/Form/Control/AddressLookup.php'
+            message: '~^Call to an undefined method Atk4\\Ui\\Jquery::AddressLookup\(\)\.$~'
+        -
+            path: 'src/Utils/JsLoader.php'
+            message: '~^Call to an undefined method Atk4\\Ui\\JsChain::setMapLoader\(\)\.$~'

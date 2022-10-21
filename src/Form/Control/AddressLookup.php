@@ -70,7 +70,7 @@ class AddressLookup extends Line
 
     /**
      * Set place result types.
-     * https://developers.google.com/places/supported_types#table3
+     * https://developers.google.com/places/supported_types#table3.
      *
      * @param string[] $types
      */

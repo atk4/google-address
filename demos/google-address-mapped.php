@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Atk4\GoogleAddress\Demos;
 
-/** @var \Atk4\Ui\App $app */
-
 use Atk4\GoogleAddress\Form\Control\AddressLookup;
 use Atk4\GoogleAddress\Utils\Build;
-use Atk4\GoogleAddress\Utils\JsLoader;
 use Atk4\GoogleAddress\Utils\Type;
 use Atk4\GoogleAddress\Utils\Value;
+use Atk4\Ui\App;
 use Atk4\Ui\Form;
 
-// Set Google developer key.
-JsLoader::setGoogleApiKey('');
+/** @var App $app */
+require_once __DIR__ . '/init-app.php';
 
 $addressValue = Build::with(Value::of(Type::STREET_NUMBER))->concat(Value::of(Type::ROUTE))->glueWith(' ');
 $address2Value = Build::with(Value::of(Type::ADMIN_LEVEL_1));

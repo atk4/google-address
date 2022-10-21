@@ -53,7 +53,7 @@ final class Build
     public function getBuiltValue(): array
     {
         return [
-            'def' => array_map(function(Value $value) {
+            'def' => array_map(function (Value $value) {
                 return $value->getDefinition();
             }, $this->components),
             'glue' => $this->glue,

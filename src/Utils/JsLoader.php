@@ -58,8 +58,7 @@ class JsLoader
     public static function load(App $app, string $locationUrl = null): void
     {
         if (!self::$isLoaded) {
-
-            if (null === $locationUrl) {
+            if ($locationUrl === null) {
                 $cdn = self::$cdn;
                 $version = self::$version;
                 $locationUrl = "{$cdn}@{$version}/public/atk-google-maps.min.js";

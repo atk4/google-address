@@ -14,4 +14,4 @@ $app = new App();
 $app->initLayout([Centered::class]);
 
 // Set Google developer key.
-JsLoader::setGoogleApiKey('');
+JsLoader::setGoogleApiKey('[YOUR-API-KEY]');

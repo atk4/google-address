@@ -19,7 +19,7 @@ class JsLoader
     protected static string $apiKey = '';
 
     /** Default location of js file, use this if $locationUrl is not specified in JsLoader::load($app, '/new/path/to/js-file.min.js'); */
-    protected static string $defaultLocationUrl = '/public/atk-google-maps.min.js';
+    protected static string $defaultLocationUrl = '/assets/atk-google-maps.min.js';
 
     /** Google maps version. */
     protected static string $apiVerstion = 'quarterly';

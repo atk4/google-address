@@ -13,16 +13,13 @@ use Atk4\Ui\JsChain;
  */
 class JsLoader
 {
-    /** Javascript file location. */
-    public static string $cdn = 'https://cdn.jsdelivr.net/gh/atk4/google-address';
-
-    /** Javascript file version. */
-    public static string $version = '4.0.0';
-
     private static bool $isLoaded = false;
 
-    /** The google api developer key. */
+    /** The Google api developer key. */
     protected static string $apiKey = '';
+
+    /** Default location of js file, use this if $locationUrl is not specified in JsLoader::load($app, '/new/path/to/js-file.min.js'); */
+    protected static string $defaultLocationUrl = '/public/atk-google-maps.min.js';
 
     /** Google maps version. */
     protected static string $apiVerstion = 'quarterly';
@@ -58,13 +55,7 @@ class JsLoader
     public static function load(App $app, string $locationUrl = null): void
     {
         if (!self::$isLoaded) {
-            if ($locationUrl === null) {
-                $cdn = self::$cdn;
-                $version = self::$version;
-                $locationUrl = "{$cdn}@{$version}/public/atk-google-maps.min.js";
-            }
-
-            $app->requireJs($locationUrl);
+            $app->requireJs($locationUrl ?? self::$defaultLocationUrl);
 
             if (self::$apiKey === '') {
                 throw new Exception('Google map Api Key not set.');
